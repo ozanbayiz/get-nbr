@@ -115,13 +115,11 @@ def organize_band_files(acq_directory: str, data_directory: str, band_filenames:
     if not osp.exists(acq_directory):
         print(f'directory {acq_directory} does not exist')
         return
-
     if osp.exists(data_directory):
         print(f'directory "{data_directory}" already exists')
     else:
         os.makedirs(data_directory)
         print(f'successfully created directory {data_directory}')
-
     for band in band_filenames.keys():
         band_directory = osp.join(data_directory, band)
         if osp.exists(band_directory):
@@ -129,7 +127,6 @@ def organize_band_files(acq_directory: str, data_directory: str, band_filenames:
         else:
             os.makedirs(band_directory)
             print(f'\nsuccessfully created directory {band_directory}')
-        
         for filename in band_filenames[band]:
             old_filepath = osp.join(acq_directory, filename)
             if osp.exists(old_filepath):

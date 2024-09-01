@@ -2,15 +2,11 @@ import os
 import os.path as osp
 
 import numpy as np
-from osgeo import gdal, osr
+from osgeo import gdal
 from tqdm import tqdm
 
 gdal.UseExceptions()
 
-
-################################
-## functions for NBR raster creation
-################################
 def array_to_raster(array, geoTransform, projection, filename, resample=True):
     if resample:
         np.nan_to_num(array, copy=False, nan=-2, posinf=-2, neginf=-2)
@@ -44,7 +40,6 @@ def compute_nbr(band1, band2):
 def create_nbr_raster(band1_filepath, band2_filepath, nbr_filepath):
     if osp.exists(nbr_filepath):
         print(f'file {nbr_filepath} already exists')
-
     ## open B5, B7, and get data
     img =  gdal.Open(band1_filepath)
     band1_data = np.array(img.GetRasterBand(1).ReadAsArray())
@@ -58,7 +53,6 @@ def create_nbr_raster(band1_filepath, band2_filepath, nbr_filepath):
     nbr_data = compute_nbr(band1_data.astype('float'), band2_data.astype('float'))
     del band1_data
     del band2_data
-
     # write to file
     array_to_raster(nbr_data, geoTransform, crs, nbr_filepath)
 
@@ -93,10 +87,6 @@ def create_nbr_rasters(data_directory, band_filenames):
     print(f'\nNBR files successfully written to {nbr_directory}')
     return nbr_directory
 
-################################
-## reprojection functions 
-################################
-
 def reproject_raster(input_filepath, output_filepath=None, crs='EPSG:4326'):
     if not output_filepath:
         input_directory = osp.dirname(input_filepath)
@@ -104,7 +94,7 @@ def reproject_raster(input_filepath, output_filepath=None, crs='EPSG:4326'):
         output_filepath = osp.join(input_directory, 'reprojected_'+input_filename)
     if osp.exists(output_filepath):
         print(f'file {output_filepath} already exists')
-        return
+        return output_filepath
     input_raster = gdal.Open(input_filepath)
     band = input_raster.GetRasterBand(1)
     del input_raster
@@ -142,9 +132,28 @@ def reproject_directory(directory, reprojection_directory=None, crs='EPSG:4326')
     print(f'\nSuccesfully projected all raster files in {directory} to {crs}\nReprojected files have been saved to {reprojection_directory}')
     return reprojection_directory
 
-################################
-## Clipping Function 
-################################
+def tile_rasters(directory: str, output_filepath=None):
+    if not output_filepath:
+        base_directory = osp.basename(directory)
+        parent_directory = osp.basename(directory)
+        output_filepath = osp.join(parent_directory, 'tiled_'+base_directory)
+    if osp.exists(output_filepath):
+        print(f'file {output_filepath} already exists')
+        return output_filepath
+    
+    filenames = os.listdir(directory)
+    filepaths = [osp.join(directory, filename) for filename in filenames]
+    gdal.Warp(
+        destNameOrDestDS=output_filepath,
+        srcDSOrSrcDSTab=filepaths,
+        format='GTiff',
+        resampleAlg='bilinear',
+        creationOptions=[
+            'COMPRESS=ZSTD', 'TILED=YES'
+        ]
+    )
+    print(f'successfully saved tiled raster to {output_filepath}')
+    return output_filepath
 
 def clip_raster(input_filepath, output_filepath=None, aoi_geojson_path=None):
     if not aoi_geojson_path:
@@ -157,7 +166,7 @@ def clip_raster(input_filepath, output_filepath=None, aoi_geojson_path=None):
         output_filepath = osp.join(input_directory, 'clipped_'+input_filename)
     if osp.exists(output_filepath):
         print(f'file {output_filepath} already exists')
-        return
+        return output_filepath
     input_raster = gdal.Open(input_filepath)
     band = input_raster.GetRasterBand(1)
     del input_raster
@@ -178,4 +187,5 @@ def clip_raster(input_filepath, output_filepath=None, aoi_geojson_path=None):
             '-multi', '-wo', 'NUM_THREADS=ALL_CPUS'
         ]
     )
+    print(f'successfully saved tiled raster to {output_filepath}')
     return output_filepath
