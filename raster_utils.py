@@ -135,7 +135,7 @@ def tile_directory(directory: str, output_filepath=None):
     if not output_filepath:
         base_directory = osp.basename(directory)
         parent_directory = osp.dirname(directory)
-        output_filepath = osp.join(parent_directory, 'tiled_'+base_directory)
+        output_filepath = osp.join(parent_directory, 'tiled_'+base_directory+'.TIF')
     if osp.exists(output_filepath):
         print(f'file {output_filepath} already exists')
         return output_filepath
