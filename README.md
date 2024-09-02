@@ -120,8 +120,6 @@ band_filenames, band_metadata = download_band_datasets(m2m, band_files)
 
     downloading band files ...
         downloading B5 files ...
-
-
         downloading B7 files ...
 
 
@@ -243,9 +241,6 @@ nbr_directory = create_nbr_rasters(data_directory, band_filenames)
     successfully created directory ./raster_data/NBR
     
     computing NBR...
-
-
-
     100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
 
     
@@ -297,9 +292,6 @@ reprojection_directory = reproject_directory(nbr_directory, crs='EPSG:4326')
     successfully created directory ./raster_data/reprojected_NBR
     
     reprojecting files in ./raster_data/NBR ...
-
-
-    
     100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
 
     
