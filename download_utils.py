@@ -42,8 +42,9 @@ def get_geojson_boundary(path: str) -> dict:
 
 def get_band_datasets(m2m, bands, params, get_earliest=True):
     params['datasetName'] = scene_dataset
+    print(f'searching for scenes ...', end=' ')
     scenes = m2m.searchScenes(**params)
-    print("Done\n{} - {} hits - {} returned".format(scene_dataset, scenes['totalHits'],scenes['recordsReturned']))
+    print(f"done\n{scenes['totalHits']} hits - {scenes['recordsReturned']} scenes returned")
 
     # filter for most recent scenes in given date range
     print('\n    filtering for most recent scenes in date range ...', end=' ')
@@ -56,7 +57,7 @@ def get_band_datasets(m2m, bands, params, get_earliest=True):
         .agg(lambda sd: sd.iloc[0])
     )
     entityIds = list(grouped_scenes_df['entityId'])
-    print(f'Done\n    {len(entityIds)} scenes remaining')
+    print(f'done\n    {len(entityIds)} scenes remaining')
 
     # search for products
     print('\nsearching for products ...', end=' ')
@@ -68,11 +69,11 @@ def get_band_datasets(m2m, bands, params, get_earliest=True):
         
     }
     downloadOptions = m2m.downloadOptions(scene_dataset, filterOptions=filterOptions, entityIds=entityIds)
-    print(f'Done\n{len(downloadOptions)} products found')
+    print(f'done\n{len(downloadOptions)} products found')
     print(f'\n    filtering duplicates ...', end=' ')
     downloadOptions_df = pd.DataFrame(downloadOptions)
     downloadOptions_df = downloadOptions_df.groupby('entityId').agg('first')
-    print(f'Done\n    {len(downloadOptions_df)} products remaining')
+    print(f'done\n    {len(downloadOptions_df)} products remaining')
 
     # select specific band files
     print(f'\nselecting band files ...')
@@ -89,7 +90,7 @@ def get_band_datasets(m2m, bands, params, get_earliest=True):
     return band_files
 
 def download_band_datasets(m2m, band_files: dict)-> tuple:
-    acq_directory = 'ingest'
+    acq_directory = './ingest'
     print('downloading band files ...')
     filterOptions = {
         'available': lambda x: x,
@@ -128,15 +129,15 @@ def organize_band_files(acq_directory: str, data_directory: str, band_filenames:
             os.makedirs(band_directory)
             print(f'\nsuccessfully created directory {band_directory}')
         for filename in band_filenames[band]:
-            old_filepath = osp.join(acq_directory, filename)
+            old_filepath = osp.join(acq_directory, filename+'.tar')
             if osp.exists(old_filepath):
                 new_filepath = osp.join(band_directory, filename)
                 os.rename(old_filepath, new_filepath)
-        print(f'successfully moved data to directory "{band_directory}"')
+        print(f'successfully moved {band} data to directory "{band_directory}"')
     # remove `acq_directory`
     for filename in os.listdir(acq_directory):
         os.remove(
             osp.join(acq_directory, filename)
         )
     os.rmdir(acq_directory)
-    print(f'successfully removed {acq_directory}')
+    print(f'\nsuccessfully removed {acq_directory}')

@@ -4,7 +4,7 @@ import os.path as osp
 import numpy as np
 from osgeo import gdal
 from tqdm import tqdm
-
+from matplotlib.pyplot import figure, imshow, colorbar, show
 gdal.UseExceptions()
 
 def array_to_raster(array, geoTransform, projection, filename, resample=True):
@@ -97,10 +97,9 @@ def reproject_raster(input_filepath, output_filepath=None, crs='EPSG:4326'):
         return output_filepath
     input_raster = gdal.Open(input_filepath)
     band = input_raster.GetRasterBand(1)
-    del input_raster
     nodata_value = band.GetNoDataValue()
-    if not nodata_value:
-        nodata_value = -20000 # this is the standard for USGS Landsat 9
+    if nodata_value is None:
+        nodata_value = -20000 # this is the standard for USGS NBR
     del input_raster
     gdal.Warp(
         output_filepath,
@@ -119,23 +118,23 @@ def reproject_directory(directory, reprojection_directory=None, crs='EPSG:4326')
         reprojection_directory = osp.join(parent_directory, 'reprojected_'+directory_name)
     # make reprojection directory if it does not yet exist
     if osp.exists(reprojection_directory):
-        print(f'Directory {reprojection_directory} already exists')
+        print(f'directory {reprojection_directory} already exists')
     else:
         os.makedirs(reprojection_directory)
-        print(f'Successfully created directory {reprojection_directory}')
+        print(f'successfully created directory {reprojection_directory}')
     # reproject rasters
-    print(f'Reprojecting files in {directory}')
+    print(f'\nreprojecting files in {directory} ...')
     for filename in tqdm(os.listdir(directory)):
         input_filepath = osp.join(directory, filename)
         output_filepath = osp.join(reprojection_directory, filename)
         reproject_raster(input_filepath, output_filepath, crs)
-    print(f'\nSuccesfully projected all raster files in {directory} to {crs}\nReprojected files have been saved to {reprojection_directory}')
+    print(f'\nsuccesfully projected all raster files in {directory} to {crs}\nreprojected files have been saved to {reprojection_directory}')
     return reprojection_directory
 
-def tile_rasters(directory: str, output_filepath=None):
+def tile_directory(directory: str, output_filepath=None):
     if not output_filepath:
         base_directory = osp.basename(directory)
-        parent_directory = osp.basename(directory)
+        parent_directory = osp.dirname(directory)
         output_filepath = osp.join(parent_directory, 'tiled_'+base_directory)
     if osp.exists(output_filepath):
         print(f'file {output_filepath} already exists')
@@ -143,6 +142,7 @@ def tile_rasters(directory: str, output_filepath=None):
     
     filenames = os.listdir(directory)
     filepaths = [osp.join(directory, filename) for filename in filenames]
+    print(f'tiling rasters in directory {directory} ...')
     gdal.Warp(
         destNameOrDestDS=output_filepath,
         srcDSOrSrcDSTab=filepaths,
@@ -152,27 +152,27 @@ def tile_rasters(directory: str, output_filepath=None):
             'COMPRESS=ZSTD', 'TILED=YES'
         ]
     )
-    print(f'successfully saved tiled raster to {output_filepath}')
+    print(f'successfully saved tiled raster to file {output_filepath}')
     return output_filepath
 
 def clip_raster(input_filepath, output_filepath=None, aoi_geojson_path=None):
     if not aoi_geojson_path:
         print('please provide a path to a geojson')
         return input_filepath
-
     if not output_filepath:
-        input_directory = osp.dirname(input_filepath)
         input_filename = osp.basename(input_filepath)
+        input_directory = osp.dirname(input_filepath)
         output_filepath = osp.join(input_directory, 'clipped_'+input_filename)
     if osp.exists(output_filepath):
         print(f'file {output_filepath} already exists')
         return output_filepath
+    print(f'clipping raster in file {input_filepath}')
     input_raster = gdal.Open(input_filepath)
     band = input_raster.GetRasterBand(1)
-    del input_raster
     nodata_value = band.GetNoDataValue()
-    if not nodata_value:
+    if nodata_value is None:
         nodata_value=-20000
+    del input_raster
     gdal.Warp(
         output_filepath,  # Output file
         input_filepath,   # Input raster file
@@ -187,5 +187,23 @@ def clip_raster(input_filepath, output_filepath=None, aoi_geojson_path=None):
             '-multi', '-wo', 'NUM_THREADS=ALL_CPUS'
         ]
     )
-    print(f'successfully saved tiled raster to {output_filepath}')
+    print(f'successfully saved clipped raster to file {output_filepath}')
     return output_filepath
+
+def plot_raster(filepath, cmap='magma'):
+    if not osp.exists(filepath):
+        print(f'file {filepath} does not exist')
+        return
+    raster = gdal.Open(filepath)
+    band = raster.GetRasterBand(1)
+    band_data = band.ReadAsArray()
+    nodata_value = band.GetNoDataValue()
+    if nodata_value is None:
+        nodata_value = -20000 # this is the standard for USGS NBR
+    del band
+    del raster
+    masked_band_data = np.ma.masked_equal(band_data, nodata_value)
+    figure(figsize=(6,6))
+    imshow(masked_band_data, cmap=cmap, interpolation='nearest')
+    colorbar()
+    show()
