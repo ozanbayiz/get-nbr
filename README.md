@@ -69,17 +69,13 @@ filters = {
 band_files = get_band_datasets(m2m, bands, filters)
 ```
 
-    searching for scenes ... 
-
-    done
+    searching for scenes ... done
     19 hits - 19 scenes returned
     
         filtering for most recent scenes in date range ... done
         13 scenes remaining
     
-    searching for products ... 
-
-    done
+    searching for products ... done
     26 products found
     
         filtering duplicates ... done
@@ -120,12 +116,8 @@ band_filenames, band_metadata = download_band_datasets(m2m, band_files)
 
     downloading band files ...
         downloading B5 files ...
-
-
         downloading B7 files ...
 
-
-    
     succesfully saved data to directory ./ingest
 
 
@@ -148,8 +140,6 @@ Before `organize_band_files`:
     │   <Band 7 Raster 2>.TIF.tar.size 
     |   ...                          
 ```
-
-<br>
 
 After `organize_band_files`:
 ```python
@@ -216,8 +206,6 @@ Before `create_nbr_rasters`:
     │   ...
 ```
 
-<br>
-
 After `create_nbr_rasters`:
 
 ```python
@@ -233,6 +221,8 @@ After `create_nbr_rasters`:
     │   │   <NBR Raster File 1>.TIF
     │   │   <NBR Raster File 2>.TIF
     │   │   ...
+    │   
+    │   ...
 ```
 
 
@@ -243,12 +233,8 @@ nbr_directory = create_nbr_rasters(data_directory, band_filenames)
     successfully created directory ./raster_data/NBR
     
     computing NBR...
+    100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
 
-
-
-100%|█████████████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
-
-    
     NBR files successfully written to ./raster_data/NBR
 
 
@@ -269,6 +255,7 @@ Before `reproject_directory`:
     │   │   <Raster 1>.TIF
     │   │   <Raster 2>.TIF
     │   │   ...
+    │
     │   ...
 ```
 
@@ -286,6 +273,7 @@ After `reproject_directory`:
     │   │   <Raster 1>.TIF
     │   │   <Raster 2>.TIF
     │   │   ...
+    │
     │   ...
 ```
 
@@ -297,11 +285,7 @@ reprojection_directory = reproject_directory(nbr_directory, crs='EPSG:4326')
     successfully created directory ./raster_data/reprojected_NBR
     
     reprojecting files in ./raster_data/NBR ...
-
-
-    
-100%|█████████████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
-
+    100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
     
     succesfully projected all raster files in ./raster_data/NBR to EPSG:4326
     reprojected files have been saved to ./raster_data/reprojected_NBR
@@ -320,14 +304,12 @@ plot_raster(tiled_raster_filepath)
 ```
 
     tiling rasters in directory ./raster_data/reprojected_NBR ...
-
-
     successfully saved tiled raster to file ./raster_data/tiled_reprojected_NBR
 
 
 
     
-![png](pipeline_files/pipeline_18_2.png)
+![png](README_files/README_18_2.png)
     
 
 
@@ -341,13 +323,11 @@ plot_raster(clipped_raster_filepath)
 ```
 
     clipping raster in file ./raster_data/tiled_reprojected_NBR
-
-
     successfully saved clipped raster to file ./raster_data/clipped_tiled_reprojected_NBR
 
 
 
     
-![png](pipeline_files/pipeline_20_2.png)
+![png](README_files/README_20_2.png)
     
 
