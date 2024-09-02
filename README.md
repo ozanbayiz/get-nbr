@@ -194,8 +194,8 @@ Before `create_nbr_rasters`:
     <Data Directory>
     │
     └───Band 5
-    │   │   <Band 5 Raster 1>.tif
-    │   │   <Band 5 Raster 2>.tif
+    │   │   <Band 5 Raster 1>.TIF
+    │   │   <Band 5 Raster 2>.TIF
     │   │   ...
     │   
     └───Band 7
