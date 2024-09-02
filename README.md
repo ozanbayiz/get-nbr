@@ -69,17 +69,13 @@ filters = {
 band_files = get_band_datasets(m2m, bands, filters)
 ```
 
-    searching for scenes ... 
-
-    done
+    searching for scenes ... done
     19 hits - 19 scenes returned
     
         filtering for most recent scenes in date range ... done
         13 scenes remaining
     
-    searching for products ... 
-
-    done
+    searching for products ... done
     26 products found
     
         filtering duplicates ... done
