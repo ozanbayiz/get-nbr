@@ -122,8 +122,6 @@ band_filenames, band_metadata = download_band_datasets(m2m, band_files)
         downloading B5 files ...
         downloading B7 files ...
 
-
-    
     succesfully saved data to directory ./ingest
 
 
@@ -146,8 +144,6 @@ Before `organize_band_files`:
     │   <Band 7 Raster 2>.TIF.tar.size 
     |   ...                          
 ```
-
-<br>
 
 After `organize_band_files`:
 ```python
@@ -213,8 +209,6 @@ Before `create_nbr_rasters`:
     │
     │   ...
 ```
-
-<br>
 
 After `create_nbr_rasters`:
 
@@ -293,7 +287,6 @@ reprojection_directory = reproject_directory(nbr_directory, crs='EPSG:4326')
     
     reprojecting files in ./raster_data/NBR ...
     100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
-
     
     succesfully projected all raster files in ./raster_data/NBR to EPSG:4326
     reprojected files have been saved to ./raster_data/reprojected_NBR
