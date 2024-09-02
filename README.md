@@ -18,7 +18,7 @@ $$ NBR2 = \frac{\text{Band }6 - \text{Band }7}{\text{Band }6 + \text{Band }7}$$
 
 <br>
 
-The following is ademonstration of how to use functions defined in `raster_utils.py` and `download_utils.py` alongside an [existing Machine-to-Machine (M2M) Python API](https://github.com/Fergui/m2m-api/tree/main) to locally install USGS Landsat raster files and process them into NBR (or NBR2, if you fetch band 6 instead of band 5).
+The following is a demonstration of how to use functions defined in `raster_utils.py` and `download_utils.py` alongside an [existing Machine-to-Machine (M2M) Python API](https://github.com/Fergui/m2m-api/tree/main) to locally install USGS Landsat raster files and process them into NBR (or NBR2, if you fetch band 6 instead of band 5).
 
 ### Creating the M2M object
 Read in a valid username and token from a local `.env` file, and use these credentials to create the `M2M` object. This `M2M` object will be needed to search and download raster files.
