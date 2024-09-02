@@ -312,7 +312,7 @@ plot_raster(tiled_raster_filepath)
 
 
     
-![png](pipeline_files/pipeline_18_2.png)
+![png](README_files/README_18_2.png)
     
 
 
@@ -333,6 +333,6 @@ plot_raster(clipped_raster_filepath)
 
 
     
-![png](pipeline_files/pipeline_20_2.png)
+![png](README_files/README_20_2.png)
     
 
