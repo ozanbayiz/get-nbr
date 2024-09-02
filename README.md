@@ -221,6 +221,8 @@ After `create_nbr_rasters`:
     │   │   <NBR Raster File 1>.TIF
     │   │   <NBR Raster File 2>.TIF
     │   │   ...
+    │   
+    │   ...
 ```
 
 
@@ -253,6 +255,7 @@ Before `reproject_directory`:
     │   │   <Raster 1>.TIF
     │   │   <Raster 2>.TIF
     │   │   ...
+    │
     │   ...
 ```
 
@@ -270,6 +273,7 @@ After `reproject_directory`:
     │   │   <Raster 1>.TIF
     │   │   <Raster 2>.TIF
     │   │   ...
+    │
     │   ...
 ```
 
