@@ -233,7 +233,6 @@ nbr_directory = create_nbr_rasters(data_directory, band_filenames)
     computing NBR...
     100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
 
-    
     NBR files successfully written to ./raster_data/NBR
 
 
@@ -301,8 +300,6 @@ plot_raster(tiled_raster_filepath)
 ```
 
     tiling rasters in directory ./raster_data/reprojected_NBR ...
-
-
     successfully saved tiled raster to file ./raster_data/tiled_reprojected_NBR
 
 
@@ -322,8 +319,6 @@ plot_raster(clipped_raster_filepath)
 ```
 
     clipping raster in file ./raster_data/tiled_reprojected_NBR
-
-
     successfully saved clipped raster to file ./raster_data/clipped_tiled_reprojected_NBR
 
 
