@@ -304,7 +304,7 @@ plot_raster(tiled_raster_filepath)
 ```
 
     tiling rasters in directory ./raster_data/reprojected_NBR ...
-    successfully saved tiled raster to file ./raster_data/tiled_reprojected_NBR
+    successfully saved tiled raster to file ./raster_data/tiled_reprojected_NBR.TIF
 
 
 
@@ -322,8 +322,8 @@ clipped_raster_filepath = clip_raster(tiled_raster_filepath, aoi_geojson_path=ao
 plot_raster(clipped_raster_filepath)
 ```
 
-    clipping raster in file ./raster_data/tiled_reprojected_NBR
-    successfully saved clipped raster to file ./raster_data/clipped_tiled_reprojected_NBR
+    clipping raster in file ./raster_data/tiled_reprojected_NBR.TIF
+    successfully saved clipped raster to file ./raster_data/clipped_tiled_reprojected_NBR.TIF
 
 
 
