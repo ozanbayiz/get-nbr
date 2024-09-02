@@ -246,7 +246,7 @@ nbr_directory = create_nbr_rasters(data_directory, band_filenames)
 
 
 
-    100%|█████████████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
+    100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:19<00:00,  1.51s/it]
 
     
     NBR files successfully written to ./raster_data/NBR
@@ -300,7 +300,7 @@ reprojection_directory = reproject_directory(nbr_directory, crs='EPSG:4326')
 
 
     
-    100%|█████████████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
+    100%|█████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.13s/it]
 
     
     succesfully projected all raster files in ./raster_data/NBR to EPSG:4326
